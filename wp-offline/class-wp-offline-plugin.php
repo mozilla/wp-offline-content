@@ -48,6 +48,8 @@ class WP_Offline_Plugin {
 
     public function render_sw() {
         $sw_scope = $this->sw_scope;
+        $network_timeout = 5000;
+        $cache_name = 'wp-offline-cache';
         header('Content-Type: application/javascript');
         header("Service-Worker-Allowed: $sw_scope");
         include_once(plugin_dir_path(__FILE__) . 'lib/js/sw.js');
