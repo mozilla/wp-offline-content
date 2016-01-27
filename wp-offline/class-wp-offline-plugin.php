@@ -1,6 +1,7 @@
 <?php
 
-include_once('class-wp-offline-router.php');
+include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-router.php');
+include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-options.php');
 
 class WP_Offline_Plugin {
     private static $instance;
@@ -14,9 +15,15 @@ class WP_Offline_Plugin {
 
     private $sw_manager_script_url;
 
+    private $options;
+
     private function __construct() {
+        $this->options = WP_Offline_Options::get_options();
         $this->set_urls();
         $this->set_script_routes();
+        register_activation_hook(__FILE__, array($this, 'activate'));
+        register_deactivation_hook(__FILE__, array($this, 'deactivate'));
+        register_uninstall_hook(__FILE__, array($this, 'uninstall'));
         add_action('wp_enqueue_scripts', array($this, 'inject_scripts'));
     }
 
@@ -30,6 +37,17 @@ class WP_Offline_Plugin {
         $router = WP_Offline_Router::get_router();
         $router->add_route($this->sw_manager_script_url, array($this, 'render_manager'));
         $router->add_route($this->sw_script_url, array($this, 'render_sw'));
+    }
+
+    public function activate() {
+        $this->options->set_defaults();
+    }
+
+    public static function deactivate() {
+    }
+
+    public static function uninstall() {
+        $this->options()->remove_all();
     }
 
     public function inject_scripts() {
@@ -48,8 +66,8 @@ class WP_Offline_Plugin {
 
     public function render_sw() {
         $sw_scope = $this->sw_scope;
-        $network_timeout = 5000;
-        $cache_name = 'wp-offline-cache';
+        $network_timeout = $this->options->get('offline_network_timeout');
+        $cache_name = $this->options->get('offline_cache_name');
         header('Content-Type: application/javascript');
         header("Service-Worker-Allowed: $sw_scope");
         include_once(plugin_dir_path(__FILE__) . 'lib/js/sw.js');
