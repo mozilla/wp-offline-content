@@ -66,6 +66,7 @@ class WP_Offline_Plugin {
 
     public function render_sw() {
         $sw_scope = $this->sw_scope;
+        $debug = 'true';
         $network_timeout = $this->options->get('offline_network_timeout');
         $cache_name = $this->options->get('offline_cache_name');
         header('Content-Type: application/javascript');

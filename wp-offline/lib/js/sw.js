@@ -9,25 +9,37 @@
   });
 
   self.addEventListener('fetch', event => {
-    console.log('fetching ' + event.request.url);
     event.respondWith(wpOffline.get(event.request));
   });
 
   var wpOffline = self.wpOffline = {
+
+    debug: <?php echo $debug; ?>,
+
+    log: function () {
+      if (this.debug) {
+        console.log.apply(console, arguments);
+      }
+    },
 
     cacheName: '<?php echo $cache_name; ?>',
 
     networkTimeout: <?php echo $network_timeout; ?>,
 
     get: function (request) {
-      var fetchFromNetwork = fetch(request);
+      var url = request.url;
+      this.log('Fetching', url);
+
+      var fetchFromNetwork = fetch(request).catch(error => this.log('Failed to fetch', url));
       if (request.method !== 'GET') {
         return fetchFromNetwork;
       }
 
-      var fetchAndCache = fetchFromNetwork.then(response => {
-        if (response.ok) {
-          this.openCache().then(cache => cache.put(request, response.clone()));
+      var fetchAndCache = fetchFromNetwork.then(responseFromNetwork => {
+        if (responseFromNetwork && responseFromNetwork.ok) {
+          this.log('Caching', responseFromNetwork.url);
+          this.openCache()
+          .then(cache => cache.put(request.clone(), responseFromNetwork.clone()));
         }
       });
 
@@ -35,20 +47,28 @@
         var expired = false;
 
         var timeout = setTimeout(() => {
+          this.log('Timeout for', url)
           expired = true;
           reject();
         }, this.networkTimeout);
 
         fetchFromNetwork
         .then(
-          response => {
+          responseFromNetwork => {
             if (!expired) {
               clearTimeout(timeout);
-              fulfill(response);
+              if (!responseFromNetwork) {
+                this.log('Undefined response for', url);
+                reject('network-error');
+              } else {
+                this.log('Success from network for', url);
+                fulfill(responseFromNetwork.clone());
+              }
             }
           },
           error => {
             if (!expired) {
+              this.log('Network error for', url);
               clearTimeout(timeout);
               reject(error);
             }
@@ -56,10 +76,17 @@
         );
       });
 
-      var fetchFromCache = self.caches.match(request);
+      var fetchFromCache = self.caches.match(request).catch(error => console.error(error));
 
       return waitForNetwork
-      .catch(() => fetchFromCache.then(response => response || fetchFromNetwork));
+        .catch(() => fetchFromCache.then(responseFromCache => {
+          if (!responseFromCache) {
+            this.log('Cache miss for', url);
+            return fetchFromNetwork;
+          }
+          this.log('Cache hit for', url);
+          return responseFromCache;
+        }));
     },
 
     openCache: function () {
