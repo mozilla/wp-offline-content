@@ -5,7 +5,8 @@ class WP_Offline_Options {
 
     private static $DEFAULTS = array(
         'offline_network_timeout' => 4000,
-        'offline_cache_name' => 'wpOffline'
+        'offline_cache_name' => 'wpOffline',
+        'offline_debug_sw' => 'false'
     );
 
     public static function get_options() {

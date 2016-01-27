@@ -31,6 +31,7 @@ class WP_Offline_Admin {
         $group = self::$options_group;
         register_setting($group, 'offline_cache_name', array($this, 'sanitize_cache_name'));
         register_setting($group, 'offline_network_timeout', array($this, 'sanitize_network_timeout'));
+        register_setting($group, 'offline_debug_sw', array($this, 'sanitize_debug_sw'));
 
         add_settings_section(
             'default',
@@ -39,11 +40,12 @@ class WP_Offline_Admin {
             self::$options_page_id
         );
 
-        add_settings_section(
-            'serving-policy',
-            __('Serving policy', 'wpoffline'),
-            array($this, 'print_serving_policy_info'),
-            self::$options_page_id
+        add_settings_field(
+            'debug-sw',
+            __('Debug service worker'),
+            array($this, 'debug_sw_input'),
+            self::$options_page_id,
+            'default'
         );
 
         add_settings_field(
@@ -52,6 +54,13 @@ class WP_Offline_Admin {
             array($this, 'cache_name_input'),
             self::$options_page_id,
             'default'
+        );
+
+        add_settings_section(
+            'serving-policy',
+            __('Serving policy', 'wpoffline'),
+            array($this, 'print_serving_policy_info'),
+            self::$options_page_id
         );
 
         add_settings_field(
@@ -95,6 +104,17 @@ class WP_Offline_Admin {
         <?php
     }
 
+    public function debug_sw_input() {
+        $debug_sw = $this->options->get('offline_debug_sw');
+        ?>
+        <label>
+          <input id="offline-network-timeout" type="checkbox" name="offline_debug_sw"
+           value="true" <?php echo 'true' == $debug_sw ? 'checked="checked"' : ''; ?>/>
+          <?php _e('Enable debug traces from the service worker in the console.'); ?>
+        </label>
+        <?php
+    }
+
     public function sanitize_cache_name($value) {
         if (isset($value) && !trim($value)) {
             add_settings_error(
@@ -118,6 +138,10 @@ class WP_Offline_Admin {
             $value = $this->options->get('offline_network_timeout');
         }
         return $value;
+    }
+
+    public function sanitize_debug_sw($value) {
+        return isset($value) ? 'true' : 'false';
     }
 
     public function print_serving_policy_info() {

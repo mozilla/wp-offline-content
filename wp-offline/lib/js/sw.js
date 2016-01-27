@@ -16,15 +16,15 @@
 
     debug: <?php echo $debug; ?>,
 
+    cacheName: '<?php echo $cache_name; ?>',
+
+    networkTimeout: <?php echo $network_timeout; ?>,
+
     log: function () {
       if (this.debug) {
         console.log.apply(console, arguments);
       }
     },
-
-    cacheName: '<?php echo $cache_name; ?>',
-
-    networkTimeout: <?php echo $network_timeout; ?>,
 
     get: function (request) {
       var url = request.url;
