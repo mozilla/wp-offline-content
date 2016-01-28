@@ -16,8 +16,3 @@ WordPress Offline plugin uses new [ServiceWorker](https://developer.mozilla.org/
 1. Clone or download the project repository
 2. Copy `wp-offline` directory inside your WordPress installation plugins directory
 3. Enable the plugin from the admin panel
-
-== Screenshots ==
-1. The screenshot description corresponds to screenshot-1.(png|jpg|jpeg|gif).
-2. The screenshot description corresponds to screenshot-2.(png|jpg|jpeg|gif).
-3. The screenshot description corresponds to screenshot-3.(png|jpg|jpeg|gif).
