@@ -70,14 +70,19 @@ class WP_Offline_Plugin {
         $network_timeout = $this->options->get('offline_network_timeout');
         $cache_name = $this->options->get('offline_cache_name');
         $resources = $this->get_precache_list();
+        $excluded_paths = $this->get_excluded_paths();
         header('Content-Type: application/javascript');
         header("Service-Worker-Allowed: $sw_scope");
         include_once(plugin_dir_path(__FILE__) . 'lib/js/sw.js');
         exit;
     }
 
-    public function get_precache_list() {
+    private function get_precache_list() {
         return array();
+    }
+
+    private function get_excluded_paths() {
+        return array(admin_url(), content_url(), includes_url());
     }
 }
 

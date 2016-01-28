@@ -3,7 +3,7 @@
   self.addEventListener('install', event => {
     event.waitUntil(Promise.all([
       self.skipWaiting(),
-      wpOffline.precache();
+      wpOffline.precache()
     ]));
   });
 
@@ -23,6 +23,12 @@
       <?php } ?>
     ],
 
+    excludedPaths: [
+      <?php foreach ($excluded_paths as $path) { ?>
+      '<?php echo $path; ?>',
+      <?php } ?>
+    ],
+
     debug: <?php echo $debug; ?>,
 
     cacheName: '<?php echo $cache_name; ?>',
@@ -35,6 +41,8 @@
       }
     },
 
+    origin: self.location.origin,
+
     precache: function () {
       return Promise.resolve();
     },
@@ -44,7 +52,7 @@
       this.log('Fetching', url);
 
       var fetchFromNetwork = fetch(request).catch(error => this.log('Failed to fetch', url));
-      if (request.method !== 'GET') {
+      if (request.method !== 'GET' || this.isExcluded(url)) {
         return fetchFromNetwork;
       }
 
@@ -102,11 +110,20 @@
         }));
     },
 
+    isExcluded: function (url) {
+      return this.isAnotherOrigin(url) ||
+             this.excludedPaths.some(path => url.startsWith(path));
+    },
+
     openCache: function () {
       if (!this._openCache) {
         this._openCache = self.caches.open(this.cacheName);
       }
       return this._openCache;
+    },
+
+    isAnotherOrigin: function (url) {
+      return !url.startsWith(this.origin);
     }
   };
 })(self);
