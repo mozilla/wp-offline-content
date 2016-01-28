@@ -78,8 +78,9 @@ class WP_Offline_Plugin {
     }
 
     private function get_precache_list() {
+        $precache_options = $this->options->get('offline_precache');
         $precache_list = array();
-        if ($this->options->get('offline_precache_pages')) {
+        if ($precache_options['pages']) {
             foreach (get_pages() as $page) {
                 $precache_list[] = array(
                     'link' => get_page_link($page),

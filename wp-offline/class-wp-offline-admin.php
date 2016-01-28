@@ -32,6 +32,7 @@ class WP_Offline_Admin {
         register_setting($group, 'offline_cache_name', array($this, 'sanitize_cache_name'));
         register_setting($group, 'offline_network_timeout', array($this, 'sanitize_network_timeout'));
         register_setting($group, 'offline_debug_sw', array($this, 'sanitize_debug_sw'));
+        register_setting($group, 'offline_precache', array($this, 'sanitize_precache'));
 
         add_settings_section(
             'default',
@@ -57,6 +58,21 @@ class WP_Offline_Admin {
         );
 
         add_settings_section(
+            'precache',
+            __('Precache', 'wpoffline'),
+            array($this, 'print_precache_info'),
+            self::$options_page_id
+        );
+
+        add_settings_field(
+            'precache',
+            __('Content'),
+            array($this, 'precache_input'),
+            self::$options_page_id,
+            'precache'
+        );
+
+        add_settings_section(
             'serving-policy',
             __('Serving policy', 'wpoffline'),
             array($this, 'print_serving_policy_info'),
@@ -74,7 +90,7 @@ class WP_Offline_Admin {
 
     public function admin_menu() {
         add_options_page(
-            __('Offline Options', 'wpoffline'), __('Offline', 'wpoffline'),
+            __('Offline Content Options', 'wpoffline'), __('Offline content', 'wpoffline'),
             'manage_options', self::$options_page_id, array($this, 'create_admin_page')
         );
     }
@@ -108,9 +124,20 @@ class WP_Offline_Admin {
         $debug_sw = $this->options->get('offline_debug_sw');
         ?>
         <label>
-          <input id="offline-network-timeout" type="checkbox" name="offline_debug_sw"
+          <input id="offline-debug-sw" type="checkbox" name="offline_debug_sw"
            value="true" <?php echo 'true' == $debug_sw ? 'checked="checked"' : ''; ?>/>
           <?php _e('Enable debug traces from the service worker in the console.'); ?>
+        </label>
+        <?php
+    }
+
+   public function precache_input() {
+        $precache = $this->options->get('offline_precache');
+        ?>
+        <label>
+          <input id="offline-precache" type="checkbox" name="offline_precache[pages]"
+           value="pages" <?php echo $precache['pages'] ? 'checked="checked"' : ''; ?>/>
+          <?php _e('Precache published pages.'); ?>
         </label>
         <?php
     }
@@ -144,9 +171,21 @@ class WP_Offline_Admin {
         return isset($value) ? 'true' : 'false';
     }
 
+    public function sanitize_precache($value) {
+        $sanitized = array();
+        $sanitized['pages'] = isset($value['pages']);
+        return $sanitized;
+    }
+
     public function print_serving_policy_info() {
         ?>
         <p><?php _e('Offline plugin prefers to serve fresh living content from the Internet but it will serve cached content in case network is not available or not reliable.', 'wpoffline');?></p>
+        <?php
+    }
+
+    public function print_precache_info() {
+        ?>
+        <p><?php _e('Precache options allows you to customize which content will be available even if the user never visit it before.', 'wpoffline');?></p>
         <?php
     }
 
