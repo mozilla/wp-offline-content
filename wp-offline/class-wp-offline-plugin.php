@@ -78,7 +78,16 @@ class WP_Offline_Plugin {
     }
 
     private function get_precache_list() {
-        return array();
+        $precache_list = array();
+        if ($this->options->get('offline_precache_pages')) {
+            foreach (get_pages() as $page) {
+                $precache_list[] = array(
+                    'link' => get_page_link($page),
+                    'hash' => wp_hash($page->post_content)
+                );
+            }
+        }
+        return $precache_list;
     }
 
     private function get_excluded_paths() {

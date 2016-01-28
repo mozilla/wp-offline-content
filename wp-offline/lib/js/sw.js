@@ -19,7 +19,7 @@
 
     resources: [
       <?php foreach ($resources as $resource) { ?>
-      '<?php echo $resource; ?>',
+      '<?php echo $resource['link']; ?>', // <?php echo $resource['hash'] . "\n"; ?>
       <?php } ?>
     ],
 
@@ -44,7 +44,7 @@
     origin: self.location.origin,
 
     precache: function () {
-      return Promise.resolve();
+      return this.openCache().then(cache => cache.addAll(this.resources));
     },
 
     get: function (request) {
