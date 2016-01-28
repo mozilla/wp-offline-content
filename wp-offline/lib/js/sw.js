@@ -1,11 +1,14 @@
 
 (function (self) {
   self.addEventListener('install', event => {
-    console.log('sw installed');
+    event.waitUntil(Promise.all([
+      self.skipWaiting(),
+      wpOffline.precache();
+    ]));
   });
 
   self.addEventListener('activate', event => {
-    console.log('sw activated');
+    event.waitUntil(self.clients.claim());
   });
 
   self.addEventListener('fetch', event => {
@@ -13,6 +16,12 @@
   });
 
   var wpOffline = self.wpOffline = {
+
+    resources: [
+      <?php foreach ($resources as $resource) { ?>
+      '<?php echo $resource; ?>',
+      <?php } ?>
+    ],
 
     debug: <?php echo $debug; ?>,
 
@@ -24,6 +33,10 @@
       if (this.debug) {
         console.log.apply(console, arguments);
       }
+    },
+
+    precache: function () {
+      return Promise.resolve();
     },
 
     get: function (request) {
