@@ -125,7 +125,7 @@ class WP_Offline_Admin {
         ?>
         <label>
           <input id="offline-debug-sw" type="checkbox" name="offline_debug_sw"
-           value="true" <?php echo 'true' == $debug_sw ? 'checked="checked"' : ''; ?>/>
+           value="true" <?php echo $debug_sw ? 'checked="checked"' : ''; ?>/>
           <?php _e('Enable debug traces from the service worker in the console.'); ?>
         </label>
         <?php
@@ -168,7 +168,7 @@ class WP_Offline_Admin {
     }
 
     public function sanitize_debug_sw($value) {
-        return isset($value) ? 'true' : 'false';
+        return isset($value);
     }
 
     public function sanitize_precache($value) {
