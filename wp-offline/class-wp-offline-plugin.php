@@ -57,23 +57,32 @@ class WP_Offline_Plugin {
 
     public function render_manager() {
         $router = WP_Offline_Router::get_router();
-        $sw_scope = $this->sw_scope;
-        $sw_url = $router->route($this->sw_script_url);
         header('Content-Type: application/javascript');
-        include_once(plugin_dir_path(__FILE__) . 'lib/js/sw-manager.js');
-        exit;
+        $this->render(plugin_dir_path(__FILE__) . 'lib/js/sw-manager.js', array(
+            '$swScope' => $this->sw_scope,
+            '$swUrl' => $router->route($this->sw_script_url)
+        ));
     }
 
     public function render_sw() {
         $sw_scope = $this->sw_scope;
-        $debug = $this->options->get('offline_debug_sw');
-        $network_timeout = $this->options->get('offline_network_timeout');
-        $cache_name = $this->options->get('offline_cache_name');
-        $resources = $this->get_precache_list();
-        $excluded_paths = $this->get_excluded_paths();
         header('Content-Type: application/javascript');
         header("Service-Worker-Allowed: $sw_scope");
-        include_once(plugin_dir_path(__FILE__) . 'lib/js/sw.js');
+        $this->render(plugin_dir_path(__FILE__) . 'lib/js/sw.js', array(
+            '$debug' => boolval($this->options->get('offline_debug_sw')),
+            '$cacheName' => $this->options->get('offline_cache_name'),
+            '$networkTimeout' => intval($this->options->get('offline_network_timeout')),
+            '$resources' => $this->get_precache_list(),
+            '$excludedPaths' => $this->get_excluded_paths()
+        ));
+    }
+
+    private function render($path, $replacements) {
+        $contents = file_get_contents($path);
+        foreach ($replacements as $key => $replacement) {
+            $contents = str_replace($key, json_encode($replacement), $contents);
+        }
+        echo $contents;
         exit;
     }
 
@@ -83,8 +92,8 @@ class WP_Offline_Plugin {
         if ($precache_options['pages']) {
             foreach (get_pages() as $page) {
                 $precache_list[] = array(
-                    'link' => get_page_link($page),
-                    'hash' => wp_hash($page->post_content)
+                    get_page_link($page),
+                    wp_hash($page->post_content)
                 );
             }
         }

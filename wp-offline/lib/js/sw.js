@@ -17,23 +17,15 @@
 
   var wpOffline = self.wpOffline = {
 
-    resources: [
-      <?php foreach ($resources as $resource) { ?>
-      '<?php echo $resource['link']; ?>', // <?php echo $resource['hash'] . "\n"; ?>
-      <?php } ?>
-    ],
+    resources: $resources,
 
-    excludedPaths: [
-      <?php foreach ($excluded_paths as $path) { ?>
-      '<?php echo $path; ?>',
-      <?php } ?>
-    ],
+    excludedPaths: $excludedPaths,
 
-    debug: <?php echo $debug; ?>,
+    debug: $debug,
 
-    cacheName: '<?php echo $cache_name; ?>',
+    cacheName: $cacheName,
 
-    networkTimeout: <?php echo $network_timeout; ?>,
+    networkTimeout: $networkTimeout,
 
     log: function () {
       if (this.debug) {
@@ -44,7 +36,7 @@
     origin: self.location.origin,
 
     precache: function () {
-      return this.openCache().then(cache => cache.addAll(this.resources));
+      return this.openCache().then(cache => cache.addAll(this.resources.map(entry => entry[0])));
     },
 
     get: function (request) {
