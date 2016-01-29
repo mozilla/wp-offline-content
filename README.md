@@ -1,7 +1,7 @@
 # wp-offline
 > Offline reading for WordPress.
 
-[![Build Status](https://travis-ci.org/delapuente/wp-offline.svg?branch=master)](https://travis-ci.org/wp-delapuente/wp-offline)
+[![Build Status](https://travis-ci.org/delapuente/wp-offline.svg?branch=master)](https://travis-ci.org/delapuente/wp-offline)
 
 ## Install the plugin
 
