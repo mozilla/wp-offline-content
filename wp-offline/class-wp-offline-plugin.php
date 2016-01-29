@@ -18,12 +18,13 @@ class WP_Offline_Plugin {
     private $options;
 
     private function __construct() {
+        $plugin_main_file = plugin_dir_path(__FILE__) . 'wp-offline.php';
         $this->options = WP_Offline_Options::get_options();
         $this->set_urls();
         $this->set_script_routes();
-        register_activation_hook(__FILE__, array($this, 'activate'));
-        register_deactivation_hook(__FILE__, array($this, 'deactivate'));
-        register_uninstall_hook(__FILE__, array($this, 'uninstall'));
+        register_activation_hook($plugin_main_file, array($this, 'activate'));
+        register_deactivation_hook($plugin_main_file, array($this, 'deactivate'));
+        register_uninstall_hook($plugin_main_file, array($this, 'uninstall'));
         add_action('wp_enqueue_scripts', array($this, 'inject_scripts'));
     }
 

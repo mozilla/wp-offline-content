@@ -7,7 +7,7 @@ class WP_Offline_Options {
         'offline_network_timeout' => 4000,
         'offline_cache_name' => 'wpOffline',
         'offline_debug_sw' => false,
-        'offline_precache_pages' => true
+        'offline_precache' => array('pages' => true)
     );
 
     public static function get_options() {
@@ -22,7 +22,9 @@ class WP_Offline_Options {
 
     public function set_defaults() {
         foreach (self::$DEFAULTS as $name => $value) {
-            update_option($name, $value);
+            if (!get_option($name)) {
+                add_option($name, $value);
+            }
         }
     }
 
