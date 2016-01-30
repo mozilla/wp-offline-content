@@ -10,5 +10,5 @@ matrix:
     - php: 5.3
       env: WP_VERSION=latest WP_MULTISITE=1
 before_script:
-  - ./install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+  - ./bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 script: make test
