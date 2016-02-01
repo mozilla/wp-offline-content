@@ -12,6 +12,12 @@ reinstall: $(WP_CLI)
 test: $(PHPUNIT)
 	$(PHPUNIT)
 
+test-sw: node_modules
+	$(NODE) node_modules/karma/bin/karma start karma.conf
+
+node_modules:
+	npm install
+
 tools/wp-cli.phar:
 	mkdir -p tools
 	wget -P tools -N https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

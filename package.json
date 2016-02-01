@@ -1,0 +1,40 @@
+{
+  "name": "wp-offline",
+  "version": "0.1.0",
+  "description": "A WordPress plugin for offlining content",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "karma": "^0.13.19",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-sinon": "^1.0.4",
+    "karma-sw-mocha": "^0.1.2",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3"
+  },
+  "scripts": {
+    "test": "make test-sw"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delapuente/wp-offline.git"
+  },
+  "keywords": [
+    "wordpress",
+    "offline",
+    "plugin",
+    "content"
+  ],
+  "author": "Salvador de la Puente González",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/delapuente/wp-offline/issues"
+  },
+  "homepage": "https://github.com/delapuente/wp-offline#readme"
+}

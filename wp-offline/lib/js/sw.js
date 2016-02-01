@@ -60,7 +60,7 @@
         var expired = false;
 
         var timeout = setTimeout(() => {
-          this.log('Timeout for', url)
+          this.log('Timeout for', url);
           expired = true;
           reject();
         }, this.networkTimeout);

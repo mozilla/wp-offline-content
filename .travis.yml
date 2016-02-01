@@ -11,4 +11,6 @@ matrix:
       env: WP_VERSION=latest WP_MULTISITE=1
 before_script:
   - ./bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-script: make test
+script:
+  - make test
+  - make test-sw
