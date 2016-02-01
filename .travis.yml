@@ -10,10 +10,12 @@ addons:
     packages:
     - google-chrome-stable
 env:
-  - WP_VERSION=latest WP_MULTISITE=0
-  - WP_VERSION=4.4.1 WP_MULTISITE=0
+  global:
   - FIREFOX_NIGHTLY_BIN=firefox
   - CHROME_BIN=google-chrome-stable
+  matrix:
+  - WP_VERSION=latest WP_MULTISITE=0
+  - WP_VERSION=4.4.1 WP_MULTISITE=0
 matrix:
   include:
     - php: 5.3
