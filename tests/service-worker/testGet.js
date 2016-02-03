@@ -18,34 +18,8 @@ describe('get()', function() {
     clock.restore();
   });
 
-  var nonGetRequest = new Request('some/valid/url', { method: 'POST'});
-
-  function addFetchFromNetworkIfExcluded(expectedResponse) {
-    it('always fetches from network if excluded', function() {
-      sinon.stub(wpOffline, 'isExcluded').returns(true);
-      return wpOffline.get(new Request('/test/url'))
-      .then(response => {
-        assert.equal(response, expectedResponse);
-        wpOffline.isExcluded.restore();
-      })
-      .catch(error => {
-        wpOffline.isExcluded.restore();
-        throw error;
-      });
-    });
-  }
-
-  function addFetchFromNetworkIfNotGet(expectedResponse) {
-    it('always fetches from network if it is not a GET request', function() {
-      return wpOffline.get(new Request('/test/url', { method: 'POST' }))
-      .then(response => {
-        assert.equal(response, expectedResponse);
-      });
-    });
-  }
-
-  function addByPassTestCases() {
-    describe('get() when request is not a GET or url is excluded', function() {
+  function addByPassWhenNetwork() {
+    describe('get() when network available but request is not a GET or url is excluded', function() {
       var networkResponse = new Response();
 
       before(function() {
@@ -56,14 +30,65 @@ describe('get()', function() {
         self.fetch.restore();
       });
 
-      addFetchFromNetworkIfNotGet(networkResponse);
-      addFetchFromNetworkIfExcluded(networkResponse);
+      it('always fetches from network if excluded', function() {
+        sinon.stub(wpOffline, 'isExcluded').returns(true);
+        return wpOffline.get(new Request('/test/url'))
+        .then(response => {
+          wpOffline.isExcluded.restore();
+          return response;
+        })
+        .then(response => {
+          assert.equal(response, networkResponse);
+        });
+      });
+
+      it('always fetches from network if it is not a GET request', function() {
+        var nonGetRequest = new Request('some/valid/url', { method: 'POST'});
+        return wpOffline.get(nonGetRequest)
+        .then(response => {
+          assert.equal(response, networkResponse);
+        });
+      });
+    });
+  }
+
+  function addByPassWhenNoNetwork() {
+    describe('get() when network non available and request is not a GET or url is excluded', function() {
+      var networkError = {};
+
+      before(function() {
+        sinon.stub(self, 'fetch').returns(Promise.reject(networkError));
+      });
+
+      after(function() {
+        self.fetch.restore();
+      });
+
+      it('error if excluded', function() {
+        sinon.stub(wpOffline, 'isExcluded').returns(true);
+        return wpOffline.get(new Request('/test/url'))
+        .catch(error => {
+          wpOffline.isExcluded.restore();
+          return error;
+        })
+        .then(error => {
+          assert.equal(error, networkError);
+        });
+      });
+
+      it('error if it is not a GET request', function() {
+        var nonGetRequest = new Request('some/valid/url', { method: 'POST'});
+        return wpOffline.get(nonGetRequest)
+        .catch(error => {
+          assert.equal(error, networkError);
+        });
+      });
     });
   }
 
   describe('get() when network is available and it does not time out', function() {
 
-    addByPassTestCases();
+    addByPassWhenNetwork();
 
     it('fetches from network', function() {
 
@@ -77,7 +102,7 @@ describe('get()', function() {
 
   describe('get() when network is available but times out', function() {
 
-    addByPassTestCases();
+    addByPassWhenNoNetwork();
 
     it('fetches from cache', function() {
 
@@ -91,7 +116,7 @@ describe('get()', function() {
 
   describe('get() when network is not available', function() {
 
-    addByPassTestCases();
+    addByPassWhenNoNetwork();
 
     it('fetches from cache if there is a match', function() {
 

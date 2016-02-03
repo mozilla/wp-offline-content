@@ -43,7 +43,12 @@
       var url = request.url;
       this.log('Fetching', url);
 
-      var fetchFromNetwork = fetch(request).catch(error => this.log('Failed to fetch', url));
+      var fetchFromNetwork = fetch(request)
+      .catch(error => {
+        this.log('Failed to fetch', url);
+        throw error;
+      });
+
       if (request.method !== 'GET' || this.isExcluded(url)) {
         return fetchFromNetwork;
       }
