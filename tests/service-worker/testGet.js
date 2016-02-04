@@ -1,8 +1,11 @@
+var NETWORK_TIMEOUT = 1000;
+var MORE_THAN_NETWORK_TIMEOUT = NETWORK_TIMEOUT + 100;
+
 var $debug = false;
 var $resources = [];
 var $excludedPaths = [];
 var $cacheName = 'testCache';
-var $networkTimeout = 1000;
+var $networkTimeout = NETWORK_TIMEOUT;
 
 describe('get()', function() {
   'use strict';
@@ -12,7 +15,6 @@ describe('get()', function() {
 
   beforeEach(function() {
     fakeCache = {
-      match: sinon.stub().returns(Promise.resolve(new Response('match'))),
       put: sinon.stub().returns(Promise.resolve())
     };
     clock = sinon.useFakeTimers();
@@ -37,7 +39,7 @@ describe('get()', function() {
           return response;
         })
         .then(response => {
-          assert.equal(response, networkResponse);
+          assert.strictEqual(response, networkResponse);
         });
       });
 
@@ -45,7 +47,7 @@ describe('get()', function() {
         var nonGetRequest = new Request('some/valid/url', { method: 'POST'});
         return wpOffline.get(nonGetRequest)
         .then(response => {
-          assert.equal(response, networkResponse);
+          assert.strictEqual(response, networkResponse);
         });
       });
     });
@@ -71,7 +73,7 @@ describe('get()', function() {
           return error;
         })
         .then(error => {
-          assert.equal(error, networkError);
+          assert.strictEqual(error, networkError);
         });
       });
 
@@ -79,7 +81,7 @@ describe('get()', function() {
         var nonGetRequest = new Request('some/valid/url', { method: 'POST'});
         return wpOffline.get(nonGetRequest)
         .catch(error => {
-          assert.equal(error, networkError);
+          assert.strictEqual(error, networkError);
         });
       });
     });
@@ -118,10 +120,14 @@ describe('get()', function() {
   });
 
   describe('get() when network is available but times out', function() {
-    var networkResponse = new Response('success!');
+    var networkResponse = new Response('network success!');
+    var cacheResponse = new Response('cache success!');
 
     before(function() {
-      sinon.stub(self, 'fetch').returns(Promise.resolve(networkResponse));
+      fakeCache.match = sinon.stub().returns(Promise.resolve(cacheResponse));
+      sinon.stub(self, 'fetch').returns(new Promise(fulfil => {
+        setTimeout(() => fulfil(networkResponse), MORE_THAN_NETWORK_TIMEOUT);
+      }));
     });
 
     after(function() {
@@ -131,13 +137,20 @@ describe('get()', function() {
     addByPassWhenNetwork(networkResponse);
 
     it('fetches from cache', function() {
-
+      wpOffline.get(new Request('test/url'))
+      .then(response => {
+        assert.strictEqual(response, cacheResponse);
+      });
     });
 
     it('stores a fresh copy in the cache', function() {
-
+      var request = new Request('some/url');
+      return wpOffline.get(request)
+        .then(() => {
+          assert.isOk(fakeCache.put.calledOnce);
+          assert.isOk(fakeCache.put.calledWith(request, networkResponse));
+        });
     });
-
   });
 
   describe('get() when network is not available', function() {
