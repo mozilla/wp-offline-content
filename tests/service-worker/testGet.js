@@ -14,6 +14,20 @@ describe('get()', function() {
   var clock;
   var fakeCache;
 
+  function testWithTimeout(request) {
+    return testAdvancingTime(request, MORE_THAN_NETWORK_TIMEOUT);
+  }
+
+  function testWithoutTimeout(request) {
+    return testAdvancingTime(request, LESS_THAN_NETWORK_TIMEOUT);
+  }
+
+  function testAdvancingTime(request, time) {
+    var result = wpOffline.get(request);
+    clock.tick(time);
+    return result;
+  }
+
   beforeEach(function() {
     fakeCache = {
       put: sinon.stub().returns(Promise.resolve())
@@ -93,7 +107,7 @@ describe('get()', function() {
     addByPassWhenNetwork(networkResponse);
 
     it('fetches from network', function() {
-      return wpOffline.get(new Request('test/url'))
+      return testWithoutTimeout(new Request('test/url'))
         .then(response => {
           assert.strictEqual(response, networkResponse);
         });
@@ -101,7 +115,7 @@ describe('get()', function() {
 
     it('stores a fresh copy in the cache', function() {
       var request = new Request('some/url');
-      return wpOffline.get(request)
+      return testWithoutTimeout(request)
         .then(() => {
           assert.isOk(fakeCache.put.calledOnce);
           assert.isOk(fakeCache.put.calledWith(request, networkResponse));
@@ -116,7 +130,7 @@ describe('get()', function() {
 
     before(function() {
       sinon.stub(self, 'fetch').returns(new Promise(fulfil => {
-        setTimeout(() => fulfil(networkResponse), MORE_THAN_NETWORK_TIMEOUT);
+        setTimeout(() => fulfil(networkResponse), (NETWORK_TIMEOUT + MORE_THAN_NETWORK_TIMEOUT)/2);
       }));
     });
 
@@ -132,17 +146,15 @@ describe('get()', function() {
 
     it('fetches from cache if there is a match', function() {
       sinon.stub(self.caches, 'match').returns(Promise.resolve(cacheResponse));
-      var result = wpOffline.get(new Request('test/url'))
+      return testWithTimeout(new Request('test/url'))
       .then(response => {
         assert.strictEqual(response, cacheResponse);
       });
-      clock.tick(MORE_THAN_NETWORK_TIMEOUT);
-      return result;
     });
 
     it('stores a fresh copy in the cache', function() {
       var request = new Request('some/url');
-      return wpOffline.get(request)
+      return testWithTimeout(request)
         .then(() => {
           assert.isOk(fakeCache.put.calledOnce);
           assert.isOk(fakeCache.put.calledWith(request, networkResponse));
