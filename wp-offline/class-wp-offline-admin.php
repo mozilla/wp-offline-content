@@ -1,7 +1,5 @@
 <?php
 
-load_plugin_textdomain('wpoffline', false, dirname(plugin_basename(__FILE__)) . '/lang');
-
 include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-options.php');
 
 // Based on: https://codex.wordpress.org/Creating_Options_Pages#Example_.232
