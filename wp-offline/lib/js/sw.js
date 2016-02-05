@@ -43,7 +43,7 @@
       var url = request.url;
       this.log('Fetching', url);
 
-      var fetchFromNetwork = fetch(request)
+      var fetchFromNetwork = fetch(request.clone())
       .catch(error => {
         this.log('Failed to fetch', url);
         throw error;
@@ -94,7 +94,7 @@
         );
       });
 
-      var fetchFromCache = self.caches.match(request).catch(error => console.error(error));
+      var fetchFromCache = self.caches.match(request.clone()).catch(error => console.error(error));
 
       return waitForNetwork
         .catch(() => fetchFromCache.then(responseFromCache => {
