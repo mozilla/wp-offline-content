@@ -7,10 +7,10 @@ Version: 0.0.1
 Author: Mozilla
 Author URI: https://www.mozilla.org/
 License: GPLv2 or later
-Text Domain: web-push
+Text Domain: offline-content
 */
 
-load_plugin_textdomain('wpoffline', false, dirname(plugin_basename(__FILE__)) . '/lang');
+load_plugin_textdomain('offline-content', false, dirname(plugin_basename(__FILE__)) . '/lang');
 
 include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-plugin.php');
 
