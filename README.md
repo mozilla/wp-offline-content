@@ -20,3 +20,8 @@ Run tests:
 ```bash
 make test
 ```
+
+Run service worker tests:
+```bash
+make test-sw
+```
