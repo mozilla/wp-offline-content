@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Offline Content 0.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-offline-"
 "content\n"
-"POT-Creation-Date: 2016-02-08 14:50:35+00:00\n"
+"POT-Creation-Date: 2016-02-08 15:02:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -37,62 +37,54 @@ msgstr ""
 msgid "Network timeout"
 msgstr ""
 
-#: class-wp-offline-content-admin.php:92 class-wp-offline-content-admin.php:94
+#: class-wp-offline-content-admin.php:91
 msgid "Offline Content Options"
-msgstr ""
-
-#: class-wp-offline-content-admin.php:92
-msgid "Offline content"
 msgstr ""
 
 #. #-#-#-#-#  wp-offline-content.pot (Offline Content 0.0.1)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: class-wp-offline-content-admin.php:94 lib/pages/admin.php:5
+#: class-wp-offline-content-admin.php:91 lib/pages/admin.php:2
 msgid "Offline Content"
 msgstr ""
 
-#: class-wp-offline-content-admin.php:111
+#: class-wp-offline-content-admin.php:107
 msgid "Name of the cache used to store offline content."
 msgstr ""
 
-#: class-wp-offline-content-admin.php:121
+#: class-wp-offline-content-admin.php:117
 msgid "seconds before serving cached content"
 msgstr ""
 
-#: class-wp-offline-content-admin.php:131
+#: class-wp-offline-content-admin.php:127
 msgid "Enable debug traces from the service worker in the console."
 msgstr ""
 
-#: class-wp-offline-content-admin.php:142
+#: class-wp-offline-content-admin.php:138
 msgid "Precache published pages."
 msgstr ""
 
-#: class-wp-offline-content-admin.php:152
+#: class-wp-offline-content-admin.php:148
 msgid "Cache name can not be empty."
 msgstr ""
 
-#: class-wp-offline-content-admin.php:165
+#: class-wp-offline-content-admin.php:161
 msgid "Network timeout must be at least 1 second."
 msgstr ""
 
-#: class-wp-offline-content-admin.php:184
+#: class-wp-offline-content-admin.php:180
 msgid ""
 "Offline plugin prefers to serve fresh living content from the Internet but "
 "it will serve cached content in case network is not available or not "
 "reliable."
 msgstr ""
 
-#: class-wp-offline-content-admin.php:190
+#: class-wp-offline-content-admin.php:186
 msgid ""
 "Precache options allows you to customize which content will be available "
 "even if the user never visit it before."
 msgstr ""
 
-#: lib/pages/admin.php:3
-msgid "Offline"
-msgstr ""
-
-#: lib/pages/admin.php:10
+#: lib/pages/admin.php:6
 msgid "Save Changes"
 msgstr ""
 
