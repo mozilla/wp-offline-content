@@ -1,0 +1,108 @@
+# Copyright (C) 2016 Offline
+# This file is distributed under the same license as the Offline package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Offline 0.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-offline\n"
+"POT-Creation-Date: 2016-02-08 12:00:42+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: class-wp-offline-admin.php:44
+msgid "Debug service worker"
+msgstr ""
+
+#: class-wp-offline-admin.php:52
+msgid "Cache name"
+msgstr ""
+
+#: class-wp-offline-admin.php:60
+msgid "Precache"
+msgstr ""
+
+#: class-wp-offline-admin.php:67
+msgid "Content"
+msgstr ""
+
+#: class-wp-offline-admin.php:75
+msgid "Serving policy"
+msgstr ""
+
+#: class-wp-offline-admin.php:82
+msgid "Network timeout"
+msgstr ""
+
+#: class-wp-offline-admin.php:91
+msgid "Offline Content Options"
+msgstr ""
+
+#: class-wp-offline-admin.php:91
+msgid "Offline content"
+msgstr ""
+
+#: class-wp-offline-admin.php:107
+msgid "Name of the cache used to store offline content."
+msgstr ""
+
+#: class-wp-offline-admin.php:117
+msgid "seconds before serving cached content"
+msgstr ""
+
+#: class-wp-offline-admin.php:127
+msgid "Enable debug traces from the service worker in the console."
+msgstr ""
+
+#: class-wp-offline-admin.php:138
+msgid "Precache published pages."
+msgstr ""
+
+#: class-wp-offline-admin.php:148
+msgid "Cache name can not be empty."
+msgstr ""
+
+#: class-wp-offline-admin.php:161
+msgid "Network timeout must be at least 1 second."
+msgstr ""
+
+#: class-wp-offline-admin.php:180
+msgid ""
+"Offline plugin prefers to serve fresh living content from the Internet but "
+"it will serve cached content in case network is not available or not "
+"reliable."
+msgstr ""
+
+#: class-wp-offline-admin.php:186
+msgid ""
+"Precache options allows you to customize which content will be available "
+"even if the user never visit it before."
+msgstr ""
+
+#. #-#-#-#-#  wp-offline.pot (Offline 0.0.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: lib/pages/admin.php:2
+msgid "Offline"
+msgstr ""
+
+#: lib/pages/admin.php:6
+msgid "Save Changes"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/delapuente/wp-offline"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Allow your users to continue accessing your content even while offline."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Mozilla"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://www.mozilla.org/"
+msgstr ""
