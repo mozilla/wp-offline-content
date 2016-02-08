@@ -4,10 +4,10 @@ WP_CLI = tools/wp-cli.phar
 PHPUNIT = tools/phpunit.phar
 
 reinstall: $(WP_CLI)
-	$(WP_CLI) plugin uninstall --deactivate wp-offline --path=$(WORDPRESS_PATH)
-	rm -f wp-offline.zip
-	zip wp-offline.zip -r wp-offline/
-	$(WP_CLI) plugin install --activate wp-offline.zip --path=$(WORDPRESS_PATH)
+	$(WP_CLI) plugin uninstall --deactivate wp-offline-content --path=$(WORDPRESS_PATH)
+	rm -f wp-offline-content.zip
+	zip wp-offline-content.zip -r wp-offline-content/
+	$(WP_CLI) plugin install --activate wp-offline-content.zip --path=$(WORDPRESS_PATH)
 
 test: $(PHPUNIT)
 	$(PHPUNIT)

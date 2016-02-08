@@ -1,7 +1,7 @@
 <?php
 
-class WP_Offline_Router {
-    private static $TRIGGER = '_wpoffline';
+class WP_Offline_Content_Router {
+    private static $TRIGGER = '_wpofflinecontent';
 
     private static $instance;
 

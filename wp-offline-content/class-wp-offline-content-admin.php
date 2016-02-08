@@ -1,9 +1,9 @@
 <?php
 
-include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-options.php');
+include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-options.php');
 
 // Based on: https://codex.wordpress.org/Creating_Options_Pages#Example_.232
-class WP_Offline_Admin {
+class WP_Offline_Content_Admin {
     private static $instance;
 
     public static $options_page_id = 'offline-options';
@@ -20,7 +20,7 @@ class WP_Offline_Admin {
     private $options;
 
     private function __construct() {
-        $this->options = WP_Offline_Options::get_options();
+        $this->options = WP_Offline_Content_Options::get_options();
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('admin_init', array($this, 'admin_init'));
     }
@@ -41,7 +41,7 @@ class WP_Offline_Admin {
 
         add_settings_field(
             'debug-sw',
-            __('Debug service worker', 'offline'),
+            __('Debug service worker', 'offline-content'),
             array($this, 'debug_sw_input'),
             self::$options_page_id,
             'default'
@@ -49,7 +49,7 @@ class WP_Offline_Admin {
 
         add_settings_field(
             'cache-name',
-            __('Cache name', 'offline'),
+            __('Cache name', 'offline-content'),
             array($this, 'cache_name_input'),
             self::$options_page_id,
             'default'
@@ -57,14 +57,14 @@ class WP_Offline_Admin {
 
         add_settings_section(
             'precache',
-            __('Precache', 'offline'),
+            __('Precache', 'offline-content'),
             array($this, 'print_precache_info'),
             self::$options_page_id
         );
 
         add_settings_field(
             'precache',
-            __('Content', 'offline'),
+            __('Content', 'offline-content'),
             array($this, 'precache_input'),
             self::$options_page_id,
             'precache'
@@ -72,14 +72,14 @@ class WP_Offline_Admin {
 
         add_settings_section(
             'serving-policy',
-            __('Serving policy', 'offline'),
+            __('Serving policy', 'offline-content'),
             array($this, 'print_serving_policy_info'),
             self::$options_page_id
         );
 
         add_settings_field(
             'network-timeout',
-            __('Network timeout', 'offline'),
+            __('Network timeout', 'offline-content'),
             array($this, 'network_timeout_input'),
             self::$options_page_id,
             'serving-policy'
@@ -88,7 +88,7 @@ class WP_Offline_Admin {
 
     public function admin_menu() {
         add_options_page(
-            __('Offline Content Options', 'offline'), __('Offline content', 'offline'),
+            __('Offline Content Options', 'offline-content'), __('Offline Content', 'offline-content'),
             'manage_options', self::$options_page_id, array($this, 'create_admin_page')
         );
     }
@@ -104,7 +104,7 @@ class WP_Offline_Admin {
          value="<?php echo $cache_name; ?>"
          class="normal-text"/>
         <p class="description">
-          <?php _e('Name of the cache used to store offline content.', 'offline'); ?>
+          <?php _e('Name of the cache used to store offline content.', 'offline-content'); ?>
         </p>
         <?php
     }
@@ -114,7 +114,7 @@ class WP_Offline_Admin {
         ?>
         <input id="offline-network-timeout" type="number" name="offline_network_timeout"
          value="<?php echo $network_timeout; ?>" min="1" step="1"
-         class="small-text"/> <?php _e('seconds before serving cached content', 'offline'); ?>
+         class="small-text"/> <?php _e('seconds before serving cached content', 'offline-content'); ?>
         <?php
     }
 
@@ -124,7 +124,7 @@ class WP_Offline_Admin {
         <label>
           <input id="offline-debug-sw" type="checkbox" name="offline_debug_sw"
            value="true" <?php echo $debug_sw ? 'checked="checked"' : ''; ?>/>
-          <?php _e('Enable debug traces from the service worker in the console.', 'offline'); ?>
+          <?php _e('Enable debug traces from the service worker in the console.', 'offline-content'); ?>
         </label>
         <?php
     }
@@ -135,7 +135,7 @@ class WP_Offline_Admin {
         <label>
           <input id="offline-precache" type="checkbox" name="offline_precache[pages]"
            value="pages" <?php echo $precache['pages'] ? 'checked="checked"' : ''; ?>/>
-          <?php _e('Precache published pages.', 'offline'); ?>
+          <?php _e('Precache published pages.', 'offline-content'); ?>
         </label>
         <?php
     }
@@ -145,7 +145,7 @@ class WP_Offline_Admin {
             add_settings_error(
                 'cache_name',
                 'cache-name-empty',
-                __('Cache name can not be empty.', 'offline')
+                __('Cache name can not be empty.', 'offline-content')
             );
             $value = $this->options->get('offline_cache_name');
         }
@@ -158,7 +158,7 @@ class WP_Offline_Admin {
             add_settings_error(
                 'network_timeout',
                 'incorrect-network-timeout',
-                __('Network timeout must be at least 1 second.', 'offline')
+                __('Network timeout must be at least 1 second.', 'offline-content')
             );
             $value = $this->options->get('offline_network_timeout');
         }
@@ -177,13 +177,13 @@ class WP_Offline_Admin {
 
     public function print_serving_policy_info() {
         ?>
-        <p><?php _e('Offline plugin prefers to serve fresh living content from the Internet but it will serve cached content in case network is not available or not reliable.', 'offline');?></p>
+        <p><?php _e('Offline plugin prefers to serve fresh living content from the Internet but it will serve cached content in case network is not available or not reliable.', 'offline-content');?></p>
         <?php
     }
 
     public function print_precache_info() {
         ?>
-        <p><?php _e('Precache options allows you to customize which content will be available even if the user never visit it before.', 'offline');?></p>
+        <p><?php _e('Precache options allows you to customize which content will be available even if the user never visit it before.', 'offline-content');?></p>
         <?php
     }
 
