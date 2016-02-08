@@ -1,10 +1,16 @@
 <?php
 /*
 Plugin Name: Offline
+Plugin URI: https://github.com/delapuente/wp-offline
 Description: Allow your users to continue accessing your content even while offline.
+Version: 0.0.1
+Author: Mozilla
+Author URI: https://www.mozilla.org/
+License: GPLv2 or later
+Text Domain: offline
 */
 
-load_plugin_textdomain('wpoffline', false, dirname(plugin_basename(__FILE__)) . '/lang');
+load_plugin_textdomain('offline', false, dirname(plugin_basename(__FILE__)) . '/lang');
 
 include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-plugin.php');
 
