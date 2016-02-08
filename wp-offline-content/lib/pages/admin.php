@@ -1,5 +1,4 @@
 <div class="wrap">
-<<<<<<< HEAD:wp-offline/lib/pages/admin.php
   <h1><?php _e('Offline Content', 'offline-content'); ?></h1>
   <form method="post" action="options.php">
     <?php settings_fields(self::$options_group); ?>
