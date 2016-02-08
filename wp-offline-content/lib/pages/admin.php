@@ -1,5 +1,5 @@
 <div class="wrap">
-  <h1><?php _e('Offline', 'wpoffline'); ?></h1>
+  <h1><?php _e('Offline Content', 'wpoffline'); ?></h1>
   <form method="post" action="options.php">
     <?php settings_fields(self::$options_group); ?>
     <?php do_settings_sections(self::$options_page_id); ?>

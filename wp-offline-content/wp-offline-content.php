@@ -1,7 +1,13 @@
 <?php
 /*
-Plugin Name: Offline
-Description: Allow your users to continue accessing your content even while offline.
+Plugin Name: Offline Content
+Description: Allow your users to read your content even while offline.
+Plugin URI: https://github.com/delapuente/wp-offline-content
+Version: 0.0.1
+Author: Mozilla
+Author URI: https://www.mozilla.org/
+License: GPLv2 or later
+Text Domain: web-push
 */
 
 load_plugin_textdomain('wpoffline', false, dirname(plugin_basename(__FILE__)) . '/lang');

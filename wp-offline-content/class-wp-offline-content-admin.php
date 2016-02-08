@@ -88,7 +88,7 @@ class WP_Offline_Content_Admin {
 
     public function admin_menu() {
         add_options_page(
-            __('Offline Content Options', 'wpoffline'), __('Offline content', 'wpoffline'),
+            __('Offline Content Options', 'wpoffline'), __('Offline Content', 'wpoffline'),
             'manage_options', self::$options_page_id, array($this, 'create_admin_page')
         );
     }
