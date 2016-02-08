@@ -24,7 +24,6 @@ class WP_Offline_Plugin {
         $this->set_script_routes();
         register_activation_hook($plugin_main_file, array($this, 'activate'));
         register_deactivation_hook($plugin_main_file, array($this, 'deactivate'));
-        register_uninstall_hook($plugin_main_file, array($this, 'uninstall'));
         add_action('wp_enqueue_scripts', array($this, 'inject_scripts'));
     }
 
@@ -45,10 +44,6 @@ class WP_Offline_Plugin {
     }
 
     public static function deactivate() {
-    }
-
-    public static function uninstall() {
-        $this->options()->remove_all();
     }
 
     public function inject_scripts() {
