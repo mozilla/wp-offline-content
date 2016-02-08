@@ -3,7 +3,7 @@
   self.addEventListener('install', event => {
     event.waitUntil(Promise.all([
       self.skipWaiting(),
-      wpOffline.precache()
+      wpOfflineContent.precache()
     ]));
   });
 
@@ -12,10 +12,10 @@
   });
 
   self.addEventListener('fetch', event => {
-    event.respondWith(wpOffline.get(event.request));
+    event.respondWith(wpOfflineContent.get(event.request));
   });
 
-  var wpOffline = self.wpOffline = {
+  var wpOfflineContent = self.wpOfflineContent = {
 
     resources: $resources,
 

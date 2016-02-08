@@ -23,7 +23,7 @@ Configure the plugin in the "Settings > Offline content" section of your WordPre
 Alternatively,
 
 1. Clone or download the project repository
-2. Copy `wp-offline` directory inside your WordPress installation plugins directory
+2. Copy `wp-offline-content` directory inside your WordPress installation plugins directory
 3. Enable the plugin from the admin panel
 
 == Frequently Asked Questions ==

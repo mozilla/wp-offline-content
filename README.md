@@ -1,11 +1,11 @@
-# wp-offline
-> Offline reading for WordPress.
+# wp-offline-content
+> A WordPress plugin for offlining content.
 
-[![Build Status](https://travis-ci.org/delapuente/wp-offline.svg?branch=master)](https://travis-ci.org/delapuente/wp-offline)
+[![Build Status](https://travis-ci.org/delapuente/wp-offline-content.svg?branch=master)](https://travis-ci.org/delapuente/wp-offline-content)
 
 ## Install the plugin
 
-Clone the repository and copy the folder `wp-offline` inside your WordPress `plugins` directory.
+Clone the repository and copy the folder `wp-offline-content` inside your WordPress `plugins` directory.
 
 Activate the plugin from the _Plugins_ menu in the _Dashboard_. Options are available to customize under the _Offline content_ submenu in _Settings_.
 

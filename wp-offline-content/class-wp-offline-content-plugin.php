@@ -1,9 +1,9 @@
 <?php
 
-include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-router.php');
-include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-options.php');
+include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-router.php');
+include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-options.php');
 
-class WP_Offline_Plugin {
+class WP_Offline_Content_Plugin {
     private static $instance;
 
     public static function init() {
@@ -18,8 +18,8 @@ class WP_Offline_Plugin {
     private $options;
 
     private function __construct() {
-        $plugin_main_file = plugin_dir_path(__FILE__) . 'wp-offline.php';
-        $this->options = WP_Offline_Options::get_options();
+        $plugin_main_file = plugin_dir_path(__FILE__) . 'wp-offline-content.php';
+        $this->options = WP_Offline_Content_Options::get_options();
         $this->set_urls();
         $this->set_script_routes();
         register_activation_hook($plugin_main_file, array($this, 'activate'));
@@ -34,7 +34,7 @@ class WP_Offline_Plugin {
     }
 
     private function set_script_routes() {
-        $router = WP_Offline_Router::get_router();
+        $router = WP_Offline_Content_Router::get_router();
         $router->add_route($this->sw_manager_script_url, array($this, 'render_manager'));
         $router->add_route($this->sw_script_url, array($this, 'render_sw'));
     }
@@ -47,12 +47,12 @@ class WP_Offline_Plugin {
     }
 
     public function inject_scripts() {
-        $router = WP_Offline_Router::get_router();
+        $router = WP_Offline_Content_Router::get_router();
         wp_enqueue_script('sw-manager-script', $router->route($this->sw_manager_script_url));
     }
 
     public function render_manager() {
-        $router = WP_Offline_Router::get_router();
+        $router = WP_Offline_Content_Router::get_router();
         header('Content-Type: application/javascript');
         $this->render(plugin_dir_path(__FILE__) . 'lib/js/sw-manager.js', array(
             '$swScope' => $this->sw_scope,

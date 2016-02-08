@@ -1,9 +1,9 @@
 <?php
 
-include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-options.php');
+include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-options.php');
 
 // Based on: https://codex.wordpress.org/Creating_Options_Pages#Example_.232
-class WP_Offline_Admin {
+class WP_Offline_Content_Admin {
     private static $instance;
 
     public static $options_page_id = 'offline-options';
@@ -20,7 +20,7 @@ class WP_Offline_Admin {
     private $options;
 
     private function __construct() {
-        $this->options = WP_Offline_Options::get_options();
+        $this->options = WP_Offline_Content_Options::get_options();
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('admin_init', array($this, 'admin_init'));
     }

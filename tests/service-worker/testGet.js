@@ -23,7 +23,7 @@ describe('get()', function() {
   }
 
   function testAdvancingTime(request, time) {
-    var result = wpOffline.get(request);
+    var result = wpOfflineContent.get(request);
     clock.tick(time);
     return result;
   }
@@ -33,8 +33,8 @@ describe('get()', function() {
       put: sinon.stub().returns(Promise.resolve())
     };
     clock = sinon.useFakeTimers();
-    importScripts('/base/wp-offline/lib/js/sw.js');
-    sinon.stub(wpOffline, 'openCache').returns(Promise.resolve(fakeCache));
+    importScripts('/base/wp-offline-content/lib/js/sw.js');
+    sinon.stub(wpOfflineContent, 'openCache').returns(Promise.resolve(fakeCache));
     sinon.stub(Response.prototype, 'clone').returnsThis();
   });
 
@@ -47,10 +47,10 @@ describe('get()', function() {
     describe('get() when network available but request is not a GET or url is excluded', function() {
 
       it('always fetches from network if excluded', function() {
-        sinon.stub(wpOffline, 'isExcluded').returns(true);
-        return wpOffline.get(new Request('/test/url'))
+        sinon.stub(wpOfflineContent, 'isExcluded').returns(true);
+        return wpOfflineContent.get(new Request('/test/url'))
         .then(response => {
-          wpOffline.isExcluded.restore();
+          wpOfflineContent.isExcluded.restore();
           return response;
         })
         .then(response => {
@@ -60,7 +60,7 @@ describe('get()', function() {
 
       it('always fetches from network if it is not a GET request', function() {
         var nonGetRequest = new Request('some/valid/url', { method: 'POST'});
-        return wpOffline.get(nonGetRequest)
+        return wpOfflineContent.get(nonGetRequest)
         .then(response => {
           assert.strictEqual(response, networkResponse);
         });
@@ -71,10 +71,10 @@ describe('get()', function() {
   function addByPassWhenNoNetwork(expectedError) {
     describe('get() when network not available and request is not a GET or url is excluded', function() {
       it('error if excluded', function() {
-        sinon.stub(wpOffline, 'isExcluded').returns(true);
-        return wpOffline.get(new Request('/test/url'))
+        sinon.stub(wpOfflineContent, 'isExcluded').returns(true);
+        return wpOfflineContent.get(new Request('/test/url'))
         .catch(error => {
-          wpOffline.isExcluded.restore();
+          wpOfflineContent.isExcluded.restore();
           return error;
         })
         .then(error => {
@@ -84,7 +84,7 @@ describe('get()', function() {
 
       it('error if it is not a GET request', function() {
         var nonGetRequest = new Request('some/valid/url', { method: 'POST'});
-        return wpOffline.get(nonGetRequest)
+        return wpOfflineContent.get(nonGetRequest)
         .catch(error => {
           assert.strictEqual(error, expectedError);
         });
@@ -182,7 +182,7 @@ describe('get()', function() {
 
     it('fetches from cache if there is a match', function() {
       sinon.stub(self.caches, 'match').returns(Promise.resolve(cacheResponse));
-      return wpOffline.get(new Request('/test/url'))
+      return wpOfflineContent.get(new Request('/test/url'))
       .then(response => {
         assert.strictEqual(response, cacheResponse);
       });
@@ -190,7 +190,7 @@ describe('get()', function() {
 
     it('error if there is no match', function() {
       sinon.stub(self.caches, 'match').returns(Promise.resolve(undefined));
-      return wpOffline.get(new Request('test/url'))
+      return wpOfflineContent.get(new Request('test/url'))
       .then(response => {
         assert.isOk(false);
       })
