@@ -1,7 +1,7 @@
 # wp-offline-content
 > A WordPress plugin for offlining content.
 
-[![Build Status](https://travis-ci.org/delapuente/wp-offline.svg?branch=master)](https://travis-ci.org/delapuente/wp-offline)
+[![Build Status](https://travis-ci.org/delapuente/wp-offline-content.svg?branch=master)](https://travis-ci.org/delapuente/wp-offline-content)
 
 ## Install the plugin
 
