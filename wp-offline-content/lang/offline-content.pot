@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Offline Content package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Offline Content 0.0.1\n"
+"Project-Id-Version: Offline Content 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-offline-"
 "content\n"
 "POT-Creation-Date: 2016-02-08 15:02:50+00:00\n"
@@ -41,7 +41,7 @@ msgstr ""
 msgid "Offline Content Options"
 msgstr ""
 
-#. #-#-#-#-#  wp-offline-content.pot (Offline Content 0.0.1)  #-#-#-#-#
+#. #-#-#-#-#  wp-offline-content.pot (Offline Content 0.1.0)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: class-wp-offline-content-admin.php:91 lib/pages/admin.php:2
 msgid "Offline Content"
