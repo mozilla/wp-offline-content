@@ -1,7 +1,7 @@
 <?php
 
-include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-router.php');
 include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-options.php');
+include_once(plugin_dir_path(__FILE__) . 'vendor/mozilla/wp-sw-manager/class-wp-sw-manager.php');
 
 class WP_Offline_Content_Plugin {
     private static $instance;
@@ -21,10 +21,9 @@ class WP_Offline_Content_Plugin {
         $plugin_main_file = plugin_dir_path(__FILE__) . 'wp-offline-content.php';
         $this->options = WP_Offline_Content_Options::get_options();
         $this->set_urls();
-        $this->set_script_routes();
+        $this->setup_sw();
         register_activation_hook($plugin_main_file, array($this, 'activate'));
         register_deactivation_hook($plugin_main_file, array($this, 'deactivate'));
-        add_action('wp_enqueue_scripts', array($this, 'inject_scripts'));
     }
 
     private function set_urls() {
@@ -33,10 +32,8 @@ class WP_Offline_Content_Plugin {
         $this->sw_scope = home_url('/');
     }
 
-    private function set_script_routes() {
-        $router = WP_Offline_Content_Router::get_router();
-        $router->add_route($this->sw_manager_script_url, array($this, 'render_manager'));
-        $router->add_route($this->sw_script_url, array($this, 'render_sw'));
+    private function setup_sw() {
+        WP_SW_Manager::get_manager()->sw()->add_content(array($this, 'render_sw'));
     }
 
     public function activate() {
@@ -46,24 +43,8 @@ class WP_Offline_Content_Plugin {
     public static function deactivate() {
     }
 
-    public function inject_scripts() {
-        $router = WP_Offline_Content_Router::get_router();
-        wp_enqueue_script('sw-manager-script', $router->route($this->sw_manager_script_url));
-    }
-
-    public function render_manager() {
-        $router = WP_Offline_Content_Router::get_router();
-        header('Content-Type: application/javascript');
-        $this->render(plugin_dir_path(__FILE__) . 'lib/js/sw-manager.js', array(
-            '$swScope' => $this->sw_scope,
-            '$swUrl' => $router->route($this->sw_script_url)
-        ));
-    }
-
     public function render_sw() {
         $sw_scope = $this->sw_scope;
-        header('Content-Type: application/javascript');
-        header("Service-Worker-Allowed: $sw_scope");
         $this->render(plugin_dir_path(__FILE__) . 'lib/js/sw.js', array(
             '$debug' => boolval($this->options->get('offline_debug_sw')),
             '$cacheName' => $this->options->get('offline_cache_name'),
@@ -79,7 +60,6 @@ class WP_Offline_Content_Plugin {
             $contents = str_replace($key, json_encode($replacement), $contents);
         }
         echo $contents;
-        exit;
     }
 
     private function get_precache_list() {

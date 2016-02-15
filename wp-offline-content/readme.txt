@@ -1,5 +1,5 @@
 === Offline Content ===
-Contributors: delapuente
+Contributors: delapuente, mozillawebapps
 Tags: offline, serivce, workers, service workers, read later, read offline, precache
 Requires at least: 3.7
 Tested up to: 4.4.1

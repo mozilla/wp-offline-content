@@ -1,0 +1,19 @@
+{
+    "name": "delapuente/wp-offline-content",
+    "description": "A WordPress plugin for offlining content.",
+    "authors": [
+        {
+            "name": "Salvador de la Puente González",
+            "email": "salva@mozilla.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mozilla/wp-sw-manager"
+        }
+    ],
+    "require": {
+        "mozilla/wp-sw-manager": "dev-master"
+    }
+}
