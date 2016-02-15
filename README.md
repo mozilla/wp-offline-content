@@ -13,7 +13,7 @@ Activate the plugin from the _Plugins_ menu in the _Dashboard_. Options are avai
 
 Install dependencies:
 ```bash
-./install-wp-tests.sh MYSQL_DATABASE_NAME MYSQL_USER MYSQL_PASSWORD localhost latest
+./bin/install-wp-tests.sh MYSQL_DATABASE_NAME MYSQL_USER MYSQL_PASSWORD localhost latest
 ```
 
 Run tests:

@@ -3,7 +3,7 @@ Contributors: delapuente, mozillawebapps
 Tags: offline, serivce, workers, service workers, read later, read offline, precache
 Requires at least: 3.7
 Tested up to: 4.4.1
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,18 @@ Alternatively,
 = What is the default policy for caching content? =
 The plugin will try to always serve fresh content from the Internet. After visiting a post or a page, the content will be cached in the background. In case of an unreliable network or lack of connectivity, the plugin will serve the cached content.
 
+= Can I use the plugin in combination with other plugins using SW =
+Since version 0.2.0, you can use this plugin in combination with other using the [WordPress Service Worker Manager library](https://github.com/mozilla/wp-sw-manager/blob/master/README.md).
+
 = Can I configure which content is available for offline reading? =
 In a very limited way, yes. You can enable/disable if pages should be precached is such a way the will be availables by the user even if they were never visited before.
 
 More options will be available with new versions of the plugin.
+
+== Change Log ==
+
+= 0.2.0 =
+Now can be combined with other WP plugins using the [WordPress Service Worker Manager library](https://github.com/mozilla/wp-sw-manager/blob/master/README.md) such as [Web Push](https://wordpress.org/plugins/web-push/).
+
+= 0.1.0 =
+Initial release.
