@@ -3,7 +3,7 @@ Contributors: delapuente, mozillawebapps
 Tags: offline, serivce, workers, service workers, read later, read offline, precache
 Requires at least: 3.7
 Tested up to: 4.4.1
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ In a very limited way, yes. You can enable/disable if pages should be precached 
 More options will be available with new versions of the plugin.
 
 == Change Log ==
+
+= 0.3.0 =
+Cleaning old caches when changing the name of the cache where offline content is stored.
 
 = 0.2.0 =
 Now can be combined with other WP plugins using the [WordPress Service Worker Manager library](https://github.com/mozilla/wp-sw-manager/blob/master/README.md) such as [Web Push](https://wordpress.org/plugins/web-push/).
