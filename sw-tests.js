@@ -2,7 +2,8 @@
 // This is the set of the SW tests. They will be run inside a SW environment.
 // Karma publishes the static content from /base/ path.
 var SW_TESTS = [
-  '/base/tests/service-worker/testGet.js'
+  '/base/tests/service-worker/testGet.js',
+  '/base/tests/service-worker/testFetch.js'
 ];
 
 // Import chai and sinon into the ServiceWorkerGlobalScope

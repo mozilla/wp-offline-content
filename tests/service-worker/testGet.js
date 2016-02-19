@@ -43,55 +43,6 @@ describe('get()', function() {
     Response.prototype.clone.restore();
   });
 
-  function addByPassWhenNetwork(networkResponse) {
-    describe('get() when network available but request is not a GET or url is excluded', function() {
-
-      it('always fetches from network if excluded', function() {
-        sinon.stub(wpOfflineContent, 'isExcluded').returns(true);
-        return wpOfflineContent.get(new Request('/test/url'))
-        .then(response => {
-          wpOfflineContent.isExcluded.restore();
-          return response;
-        })
-        .then(response => {
-          assert.strictEqual(response, networkResponse);
-        });
-      });
-
-      it('always fetches from network if it is not a GET request', function() {
-        var nonGetRequest = new Request('some/valid/url', { method: 'POST'});
-        return wpOfflineContent.get(nonGetRequest)
-        .then(response => {
-          assert.strictEqual(response, networkResponse);
-        });
-      });
-    });
-  }
-
-  function addByPassWhenNoNetwork(expectedError) {
-    describe('get() when network not available and request is not a GET or url is excluded', function() {
-      it('error if excluded', function() {
-        sinon.stub(wpOfflineContent, 'isExcluded').returns(true);
-        return wpOfflineContent.get(new Request('/test/url'))
-        .catch(error => {
-          wpOfflineContent.isExcluded.restore();
-          return error;
-        })
-        .then(error => {
-          assert.strictEqual(error, expectedError);
-        });
-      });
-
-      it('error if it is not a GET request', function() {
-        var nonGetRequest = new Request('some/valid/url', { method: 'POST'});
-        return wpOfflineContent.get(nonGetRequest)
-        .catch(error => {
-          assert.strictEqual(error, expectedError);
-        });
-      });
-    });
-  }
-
   // TODO: It remains to check clone(). This can bit us.
   describe('get() when network is available and it does not time out', function() {
     var networkResponse = new Response('success!');
@@ -103,8 +54,6 @@ describe('get()', function() {
     after(function() {
       self.fetch.restore();
     });
-
-    addByPassWhenNetwork(networkResponse);
 
     it('fetches from network', function() {
       return testWithoutTimeout(new Request('test/url'))
@@ -142,8 +91,6 @@ describe('get()', function() {
       if (self.caches.match.restore) { self.caches.match.restore(); }
     });
 
-    addByPassWhenNetwork(networkResponse);
-
     it('fetches from cache if there is a match', function() {
       sinon.stub(self.caches, 'match').returns(Promise.resolve(cacheResponse));
       return testWithTimeout(new Request('test/url'))
@@ -177,8 +124,6 @@ describe('get()', function() {
     afterEach(function() {
       if (self.caches.match.restore) { self.caches.match.restore(); }
     });
-
-    addByPassWhenNoNetwork(networkError);
 
     it('fetches from cache if there is a match', function() {
       sinon.stub(self.caches, 'match').returns(Promise.resolve(cacheResponse));

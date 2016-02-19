@@ -1,20 +1,5 @@
 
 (function (self) {
-  self.addEventListener('install', event => {
-    event.waitUntil(Promise.all([
-      self.skipWaiting(),
-      wpOfflineContent.precache()
-    ]));
-  });
-
-  self.addEventListener('activate', event => {
-    event.waitUntil(self.clients.claim());
-  });
-
-  self.addEventListener('fetch', event => {
-    event.respondWith(wpOfflineContent.get(event.request));
-  });
-
   var wpOfflineContent = self.wpOfflineContent = {
 
     resources: $resources,
@@ -35,6 +20,28 @@
 
     origin: self.location.origin,
 
+    onInstall: function (event) {
+      event.waitUntil(Promise.all([
+        self.skipWaiting(),
+        wpOfflineContent.precache()
+      ]));
+    },
+
+    onActivate: function (event) {
+      event.waitUntil(self.clients.claim());
+    },
+
+    onFetch: function (event) {
+      var request = event.request;
+      if (this.shouldBeHandled(request)) {
+        event.respondWith(wpOfflineContent.get(request));
+      }
+    },
+
+    shouldBeHandled: function (request) {
+      return request.method === 'GET' && !this.isExcluded(request.url);
+    },
+
     precache: function () {
       return this.openCache().then(cache => cache.addAll(this.resources.map(entry => entry[0])));
     },
@@ -48,10 +55,6 @@
         this.log('Failed to fetch', url);
         throw error;
       });
-
-      if (request.method !== 'GET' || this.isExcluded(url)) {
-        return fetchFromNetwork;
-      }
 
       var fetchAndCache = fetchFromNetwork.then(responseFromNetwork => {
         if (responseFromNetwork && responseFromNetwork.ok) {
@@ -123,4 +126,9 @@
       return !url.startsWith(this.origin);
     }
   };
+
+  self.addEventListener('install', wpOfflineContent.onInstall.bind(wpOfflineContent));
+  self.addEventListener('activate', wpOfflineContent.onActivate.bind(wpOfflineContent));
+  self.addEventListener('fetch', wpOfflineContent.onFetch.bind(wpOfflineContent));
+
 })(self);
