@@ -1,5 +1,7 @@
 
 (function (self) {
+  var CACHE_PREFIX = '__wp-offline-content::';
+
   var wpOfflineContent = self.wpOfflineContent = {
 
     resources: $resources,
@@ -8,7 +10,7 @@
 
     debug: $debug,
 
-    cacheName: $cacheName,
+    cacheName: CACHE_PREFIX + $cacheName,
 
     networkTimeout: $networkTimeout,
 
@@ -28,7 +30,7 @@
     },
 
     onActivate: function (event) {
-      event.waitUntil(self.clients.claim());
+      event.waitUntil(Promise.all([self.clients.claim(), this.deleteOutdatedCaches(CACHE_PREFIX)]));
     },
 
     onFetch: function (event) {
@@ -44,6 +46,17 @@
 
     precache: function () {
       return this.openCache().then(cache => cache.addAll(this.resources.map(entry => entry[0])));
+    },
+
+    deleteOutdatedCaches: function (prefix) {
+      return self.caches.keys().then(names => {
+        return Promise.all(names.map(cacheName => {
+          if (cacheName.startsWith(prefix) && cacheName !== this.cacheName) {
+            return self.caches.delete(cacheName);
+          }
+          return Promise.resolve();
+        }));
+      });
     },
 
     get: function (request) {
