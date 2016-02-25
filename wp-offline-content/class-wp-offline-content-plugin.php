@@ -47,7 +47,6 @@ class WP_Offline_Content_Plugin {
         $sw_scope = $this->sw_scope;
         $this->render(plugin_dir_path(__FILE__) . 'lib/js/sw.js', array(
             '$debug' => boolval($this->options->get('offline_debug_sw')),
-            '$cacheName' => $this->options->get('offline_cache_name'),
             '$networkTimeout' => intval($this->options->get('offline_network_timeout')),
             '$resources' => $this->get_precache_list(),
             '$excludedPaths' => $this->get_excluded_paths()
@@ -67,10 +66,7 @@ class WP_Offline_Content_Plugin {
         $precache_list = array();
         if ($precache_options['pages']) {
             foreach (get_pages() as $page) {
-                $precache_list[] = array(
-                    get_page_link($page),
-                    wp_hash($page->post_content)
-                );
+                $precache_list[get_page_link($page)] = wp_hash($page->post_content);
             }
         }
         return $precache_list;

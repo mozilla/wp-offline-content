@@ -1,8 +1,11 @@
+(function (self, localforage) {
+  var PRIVATE_NAME = '__wp-offline-content';
 
-(function (self) {
-  var CACHE_PREFIX = '__wp-offline-content::';
+  var CACHE_PREFIX = PRIVATE_NAME + '::';
 
   var wpOfflineContent = self.wpOfflineContent = {
+
+    storage: localforage.createInstance({ name: PRIVATE_NAME }),
 
     resources: $resources,
 
@@ -10,7 +13,7 @@
 
     debug: $debug,
 
-    cacheName: CACHE_PREFIX + $cacheName,
+    cacheName: CACHE_PREFIX + 'v1',
 
     networkTimeout: $networkTimeout,
 
@@ -25,7 +28,7 @@
     onInstall: function (event) {
       event.waitUntil(Promise.all([
         self.skipWaiting(),
-        wpOfflineContent.precache()
+        wpOfflineContent.update()
       ]));
     },
 
@@ -44,8 +47,66 @@
       return request.method === 'GET' && !this.isExcluded(request.url);
     },
 
-    precache: function () {
-      return this.openCache().then(cache => cache.addAll(this.resources.map(entry => entry[0])));
+    update: function () {
+      return this.storage.getItem('resources')
+      .then(currents => this.computeUpdateOrder(currents || {}, this.resources))
+      .then(order => this.doOrder(order))
+      .then(() => this.storage.setItem('resources', this.resources));
+    },
+
+    computeUpdateOrder: function (currentContent, newContent) {
+      var order = {
+        remove: [],
+        update: [],
+        addnew: []
+      };
+      var currentUrls = Object.keys(currentContent);
+      currentUrls.forEach(url => {
+        if (!(url in newContent)) {
+          order.remove.push([url, currentContent[url]]);
+        }
+        else if (currentContent[url] !== newContent[url]) {
+          order.update.push([url, newContent[url]]);
+        }
+      });
+      var newUrls = Object.keys(newContent);
+      newUrls.forEach(newUrl => {
+        if (!(newUrl in currentContent)) {
+          order.addnew.push([newUrl, newContent[newUrl]]);
+        }
+      });
+      return order;
+    },
+
+    doOrder: function(order) {
+      return Promise.all([
+        this._deleteFromCache(order.remove),
+        this._deleteFromCache(order.update).then(() => this._cacheFromNetwork(order.update)),
+        this._cacheFromNetwork(order.addnew)
+      ]);
+    },
+
+    _deleteFromCache: function(deletions) {
+      return this.openCache()
+      .then(cache => Promise.all(deletions.map(deletion => {
+        var url = deletion[0];
+        return cache.delete(url);
+      })));
+    },
+
+    _cacheFromNetwork: function(resources) {
+      return this.openCache()
+      .then(cache => Promise.all(resources.map(resource => {
+        var url = resource[0];
+        return self.fetch(url)
+          .then(response => {
+            if (response.ok) {
+              return cache.put(url, response);
+            }
+            this.log('Error fetching', url);
+            return Promise.resolve();
+          });
+      })));
     },
 
     deleteOutdatedCaches: function (prefix) {
@@ -144,4 +205,4 @@
   self.addEventListener('activate', wpOfflineContent.onActivate.bind(wpOfflineContent));
   self.addEventListener('fetch', wpOfflineContent.onFetch.bind(wpOfflineContent));
 
-})(self);
+})(self, localforage);
