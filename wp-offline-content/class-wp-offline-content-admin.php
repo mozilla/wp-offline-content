@@ -27,7 +27,6 @@ class WP_Offline_Content_Admin {
 
     public function admin_init() {
         $group = self::$options_group;
-        register_setting($group, 'offline_cache_name', array($this, 'sanitize_cache_name'));
         register_setting($group, 'offline_network_timeout', array($this, 'sanitize_network_timeout'));
         register_setting($group, 'offline_debug_sw', array($this, 'sanitize_debug_sw'));
         register_setting($group, 'offline_precache', array($this, 'sanitize_precache'));
@@ -43,14 +42,6 @@ class WP_Offline_Content_Admin {
             'debug-sw',
             __('Debug service worker', 'offline-content'),
             array($this, 'debug_sw_input'),
-            self::$options_page_id,
-            'default'
-        );
-
-        add_settings_field(
-            'cache-name',
-            __('Cache name', 'offline-content'),
-            array($this, 'cache_name_input'),
             self::$options_page_id,
             'default'
         );
@@ -97,18 +88,6 @@ class WP_Offline_Content_Admin {
         include_once(plugin_dir_path(__FILE__) . 'lib/pages/admin.php');
     }
 
-    public function cache_name_input() {
-        $cache_name = $this->options->get('offline_cache_name');
-        ?>
-        <input id="offline-cache-name" type="text" name="offline_cache_name"
-         value="<?php echo $cache_name; ?>"
-         class="normal-text"/>
-        <p class="description">
-          <?php _e('Name of the cache used to store offline content.', 'offline-content'); ?>
-        </p>
-        <?php
-    }
-
     public function network_timeout_input() {
         $network_timeout = $this->options->get('offline_network_timeout') / 1000;
         ?>
@@ -138,18 +117,6 @@ class WP_Offline_Content_Admin {
           <?php _e('Precache published pages.', 'offline-content'); ?>
         </label>
         <?php
-    }
-
-    public function sanitize_cache_name($value) {
-        if (isset($value) && !trim($value)) {
-            add_settings_error(
-                'cache_name',
-                'cache-name-empty',
-                __('Cache name can not be empty.', 'offline-content')
-            );
-            $value = $this->options->get('offline_cache_name');
-        }
-        return $value;
     }
 
     public function sanitize_network_timeout($value) {
