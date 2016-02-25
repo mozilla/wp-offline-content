@@ -66,7 +66,7 @@ class WP_Offline_Content_Plugin {
         $precache_list = array();
         if ($precache_options['pages']) {
             foreach (get_pages() as $page) {
-                $precache_list[get_page_link($page)] = wp_hash($page->post_content);
+                $precache_list[get_page_link($page)] = $page->post_modified;
             }
         }
         return $precache_list;
