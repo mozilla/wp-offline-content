@@ -13,8 +13,6 @@ class WP_Offline_Content_Plugin {
         return self::$instance;
     }
 
-    private $sw_manager_script_url;
-
     private $options;
 
     private function __construct() {
@@ -27,8 +25,6 @@ class WP_Offline_Content_Plugin {
     }
 
     private function set_urls() {
-        $this->sw_manager_script_url = plugins_url('lib/js/sw-manager.js', __FILE__);
-        $this->sw_script_url = plugins_url('lib/js/sw.js', __FILE__);
         $this->sw_scope = home_url('/');
     }
 
