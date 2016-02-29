@@ -1,4 +1,4 @@
-describe('updateCache()', function() {
+describe('update()', function() {
   'use strict';
 
   function update(item) {
@@ -25,6 +25,34 @@ describe('updateCache()', function() {
   });
 
   afterEach(function() {
+  });
+
+  describe('needsUpdate()', function() {
+    var swVersion = 'a-version';
+    var sameVersion = swVersion;
+    var otherVersion = 'other-version';
+
+    it('resolves to true if version stored and in the sw do not match', function () {
+      wpOfflineContent.version = swVersion;
+      wpOfflineContent.storage.getItem =
+        sinon.stub().withArgs('version').returns(Promise.resolve(otherVersion));
+
+      return wpOfflineContent.needsUpdate()
+      .then(function(isUpdateNeeded) {
+        assert.isTrue(isUpdateNeeded);
+      });
+    });
+
+    it('resolves to false if version stored and in the sw match', function () {
+      wpOfflineContent.version = swVersion;
+      wpOfflineContent.storage.getItem =
+        sinon.stub().withArgs('version').returns(Promise.resolve(sameVersion));
+
+      return wpOfflineContent.needsUpdate()
+        .then(function(isUpdateNeeded) {
+          assert.isFalse(isUpdateNeeded);
+        });
+    });
   });
 
   describe('computeUpdateOrder()', function () {
