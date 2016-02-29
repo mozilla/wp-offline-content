@@ -51,9 +51,15 @@ class WP_Offline_Content_Plugin {
 
     private function render($path, $replacements) {
         $contents = file_get_contents($path);
+        $incremental_hash = hash_init('md5');
+        hash_update($incremental_hash, $contents);
         foreach ($replacements as $key => $replacement) {
-            $contents = str_replace($key, json_encode($replacement), $contents);
+            $value = json_encode($replacement);
+            hash_update($incremental_hash, $value);
+            $contents = str_replace($key, $value, $contents);
         }
+        $version = json_encode(hash_final($incremental_hash));
+        $contents = str_replace('$version', $version, $contents);
         echo $contents;
     }
 

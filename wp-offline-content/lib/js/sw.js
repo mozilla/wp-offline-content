@@ -5,6 +5,8 @@
 
   var wpOfflineContent = self.wpOfflineContent = {
 
+    version: $version,
+
     storage: localforage.createInstance({ name: PRIVATE_NAME }),
 
     resources: $resources,
@@ -48,10 +50,21 @@
     },
 
     update: function () {
-      return this.storage.getItem('resources')
-      .then(currents => this.computeUpdateOrder(currents || {}, this.resources))
-      .then(order => this.doOrder(order))
-      .then(() => this.storage.setItem('resources', this.resources));
+      return this.needsUpdate().then(updateIsNeeded => {
+        if (updateIsNeeded) {
+          return this.storage.getItem('resources')
+          .then(currents => this.computeUpdateOrder(currents || {}, this.resources))
+          .then(order => this.doOrder(order))
+          .then(() => this.storage.setItem('resources', this.resources))
+          .then(() => this.storage.setItem('version', this.version));
+        }
+        return Promise.resolve();
+      });
+    },
+
+    needsUpdate: function () {
+      return this.storage.getItem('version')
+      .then(lastVersion => Promise.resolve(lastVersion !== this.version));
     },
 
     computeUpdateOrder: function (currentContent, newContent) {

@@ -2,6 +2,7 @@ var NETWORK_TIMEOUT = 100;
 var MORE_THAN_NETWORK_TIMEOUT = NETWORK_TIMEOUT + 10;
 var LESS_THAN_NETWORK_TIMEOUT = NETWORK_TIMEOUT - 10;
 
+var $version = '';
 var $debug = false;
 var $resources = [];
 var $excludedPaths = [];
