@@ -5,9 +5,21 @@
 
 ## Install the plugin
 
-Clone the repository and copy the folder `wp-offline-content` inside your WordPress `plugins` directory.
+You can find this plugin in the [WordPress Plugin repository](https://wordpress.org/plugins/offline-content/) so you can install it from the _Plugins_ menu of your WordPress installation.
 
-Activate the plugin from the _Plugins_ menu in the _Dashboard_. Options are available to customize under the _Offline content_ submenu in _Settings_.
+In case you want to do it manually, here are the instructions:
+
+First, clone the repository.
+
+Now, at the root of the repository, run (you need [composer](https://getcomposer.org) for this):
+
+```
+$ composer update --working-dir=wp-offline-content
+```
+
+And copy (or symlink) the folder `wp-offline-content` inside your WordPress `plugins` directory.
+
+Once installed, activate the plugin from the _Plugins_ menu in the _Dashboard_. Options are available to customize under the _Offline content_ submenu in _Settings_.
 
 ## Running tests
 
