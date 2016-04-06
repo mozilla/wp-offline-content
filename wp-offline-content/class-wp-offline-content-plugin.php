@@ -1,7 +1,6 @@
 <?php
 
 include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-options.php');
-include_once(plugin_dir_path(__FILE__) . 'vendor/mozilla/wp-sw-manager/class-wp-sw-manager.php');
 
 class WP_Offline_Content_Plugin {
     private static $instance;
@@ -29,7 +28,7 @@ class WP_Offline_Content_Plugin {
     }
 
     private function setup_sw() {
-        WP_SW_Manager::get_manager()->sw()->add_content(array($this, 'render_sw'));
+        Mozilla\WP_SW_Manager::get_manager()->sw()->add_content(array($this, 'render_sw'));
     }
 
     public function activate() {
