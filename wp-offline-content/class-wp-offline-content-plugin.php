@@ -1,7 +1,6 @@
 <?php
 
 include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-options.php');
-include_once(plugin_dir_path(__FILE__) . 'vendor/mozilla/wp-sw-manager/class-wp-sw-manager.php');
 
 class WP_Offline_Content_Plugin {
     private static $instance;
