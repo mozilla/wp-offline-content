@@ -2,5 +2,4 @@ tools/
 node_modules/
 .tern-port
 svn/
-composer.lock
 wp-offline-content/vendor/

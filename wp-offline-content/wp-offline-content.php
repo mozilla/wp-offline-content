@@ -12,6 +12,7 @@ Text Domain: offline-content
 
 load_plugin_textdomain('offline-content', false, dirname(plugin_basename(__FILE__)) . '/lang');
 
+include_once(plugin_dir_path(__FILE__) . 'vendor/autoload.php');
 include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-plugin.php');
 
 if (is_admin()) {

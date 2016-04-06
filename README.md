@@ -14,7 +14,7 @@ First, clone the repository.
 Now, at the root of the repository, run (you need [composer](https://getcomposer.org) for this):
 
 ```
-$ composer update --working-dir=wp-offline-content
+$ composer install --working-dir=wp-offline-content --optimize-autoloader
 ```
 
 And copy (or symlink) the folder `wp-offline-content` inside your WordPress `plugins` directory.

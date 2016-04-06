@@ -29,7 +29,7 @@ class WP_Offline_Content_Plugin {
     }
 
     private function setup_sw() {
-        WP_SW_Manager::get_manager()->sw()->add_content(array($this, 'render_sw'));
+        Mozilla\WP_SW_Manager::get_manager()->sw()->add_content(array($this, 'render_sw'));
     }
 
     public function activate() {
