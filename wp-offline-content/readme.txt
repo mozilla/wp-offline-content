@@ -3,7 +3,7 @@ Contributors: delapuente, mozillawebapps
 Tags: offline, serivce, workers, service workers, read later, read offline, precache
 Requires at least: 3.7
 Tested up to: 4.4.1
-Stable tag: 0.5.0
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,12 @@ In a very limited way, yes. You can enable/disable if pages should be precached 
 More options will be available with new versions of the plugin.
 
 == Change Log ==
+
+= 0.6.0 =
+The Service Worker unregister itself when no plugin using service workers is enabled.
+Use WordPress AJAX infrastructure for dynamically generating the service worker file while reducing server footprint.
+Use [WP_Serve_File](http://github.com/marco-c/wp_serve_file) to efficiently generate the registrar and avoid unnecessary WordPress loads.
+Relying on composer's autoload to manage plugin dependencies.
 
 = 0.5.0 =
 Prevent undesired updates when used with other service worker supported plugins for WordPress.
