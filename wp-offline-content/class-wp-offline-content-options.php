@@ -7,7 +7,10 @@ class WP_Offline_Content_Options {
         'offline_network_timeout' => 4000,
         'offline_cache_name' => 'wpOfflineContent',
         'offline_debug_sw' => false,
-        'offline_precache' => array('pages' => true)
+        'offline_precache' => array('pages' => true),
+        'offline_shell_enabled' => false,
+        'offline_shell_files' => array('self.css'),
+        'offline_shell_race_enabled' => false
     );
 
     public static function get_options() {

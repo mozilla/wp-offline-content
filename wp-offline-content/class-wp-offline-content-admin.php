@@ -1,6 +1,6 @@
 <?php
 
-include_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-options.php');
+require_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-options.php');
 
 // Based on: https://codex.wordpress.org/Creating_Options_Pages#Example_.232
 class WP_Offline_Content_Admin {

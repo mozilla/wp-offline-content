@@ -1,8 +1,6 @@
 <?php
 
-load_plugin_textdomain('offline-shell', false, dirname(plugin_basename(__FILE__)).'/lang');
-
-require_once(plugin_dir_path(__FILE__).'wp-offline-shell-recommender.php');
+require_once(plugin_dir_path(__FILE__) . 'class-wp-offline-shell-recommender.php');
 
 class Offline_Shell_Admin {
   private static $instance;
