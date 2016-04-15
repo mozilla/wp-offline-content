@@ -3,7 +3,7 @@ Contributors: delapuente, mozillawebapps
 Tags: offline, serivce, workers, service workers, read later, read offline, precache
 Requires at least: 3.8
 Tested up to: 4.5
-Stable tag: 0.6.0
+Stable tag: 0.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ In a very limited way, yes. You can enable/disable if pages should be precached 
 More options will be available with new versions of the plugin.
 
 == Change Log ==
+
+= 0.6.1 =
+Includes latest Service Worker Manager which fixes a problem unregistering the service worker when all plugins using it are disabled.
 
 = 0.6.0 =
 The Service Worker unregister itself when no plugin using service workers is enabled.
