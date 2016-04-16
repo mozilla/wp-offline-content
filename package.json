@@ -1,6 +1,6 @@
 {
   "name": "wp-offline-content",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A WordPress plugin for offlining content",
   "main": "index.js",
   "directories": {
