@@ -1,8 +1,7 @@
 <?php
 
-load_plugin_textdomain('offline-shell', false, dirname(plugin_basename(__FILE__)).'/lang');
-
-require_once(plugin_dir_path(__FILE__).'wp-offline-shell-recommender.php');
+require_once(plugin_dir_path(__FILE__) . 'class-wp-offline-content-options.php');
+require_once(plugin_dir_path(__FILE__) . 'class-wp-offline-shell-recommender.php');
 
 class Offline_Shell_Admin {
   private static $instance;
@@ -81,8 +80,8 @@ class Offline_Shell_Admin {
 
   public function on_switch_theme() {
     if(get_option('offline_shell_enabled')) {
-      update_option('offline_shell_enabled', Offline_Shell_DB::$options['offline_shell_enabled']);
-      update_option('offline_shell_files', Offline_Shell_DB::$options['offline_shell_files']);
+      update_option('offline_shell_enabled', WP_Offline_Content_Options::$DEFAULTS['offline_shell_enabled']);
+      update_option('offline_shell_files', WP_Offline_Content_Options::$DEFAULTS['offline_shell_files']);
       add_action('admin_notices', array($this, 'show_switch_theme_message'));
     }
   }
