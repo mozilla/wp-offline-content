@@ -3,7 +3,7 @@
 class WP_Offline_Content_Options {
     private static $instance;
 
-    private static $DEFAULTS = array(
+    public static $DEFAULTS = array(
         'offline_network_timeout' => 4000,
         'offline_cache_name' => 'wpOfflineContent',
         'offline_debug_sw' => false,
