@@ -3,7 +3,7 @@
 Plugin Name: Offline Content
 Description: Allow your users to read your content even while offline.
 Plugin URI: https://github.com/mozilla/wp-offline-content
-Version: 0.6.0
+Version: 0.6.1
 Author: Mozilla
 Author URI: https://www.mozilla.org/
 License: GPLv2 or later
