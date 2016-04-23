@@ -23,20 +23,20 @@ svn:
 	@echo "Removing .git repositories from bundle"
 	@find svn/trunk \( -name ".git" \) -prune -exec rm -rf {} \;
 
-ci-lint: configure_linter $(WP_CODE_STANDARDS)
+ci-lint: configure_linter
 	$(PHPCS) -i
 	$(PHPCS) --standard=$(CODE_STANDARD) --extensions=php -n $(PLUGIN_DIR)
 
-lint: configure_linter $(WP_CODE_STANDARDS)
+lint: configure_linter
 	$(PHPCS) -i
 	$(PHPCS) --standard=$(CODE_STANDARD) --extensions=php --colors $(PLUGIN_DIR)
 
-autofix: configure_linter $(PHPCBF) $(WP_CODE_STANDARDS)
+autofix: configure_linter $(PHPCBF)
 	$(PHPCBF) -i
 	$(PHPCBF) --standard=$(CODE_STANDARD) --extensions=php $(PLUGIN_DIR)
 
 
-configure_linter: $(PHPCS)
+configure_linter: $(PHPCS) $(WP_CODE_STANDARDS)
 	$(PHPCS) --config-set installed_paths $(WP_CODE_STANDARDS)
 
 test: $(PHPUNIT)
