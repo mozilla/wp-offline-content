@@ -8,7 +8,7 @@ PHPUNIT = tools/phpunit.phar
 PHPCS = tools/phpcs.phar
 PHPCBF = tools/phpcbf.phar
 PLUGIN_ZIP = $(PLUGIN_DIR).zip
-CODE_STANDARD = WordPress
+CODE_STANDARD = ./code-guidelines.xml
 LINTER_IGNORE = vendor
 
 reinstall: $(WP_CLI)
@@ -23,13 +23,18 @@ svn:
 	@echo "Removing .git repositories from bundle"
 	@find svn/trunk \( -name ".git" \) -prune -exec rm -rf {} \;
 
+ci-lint: configure_linter $(WP_CODE_STANDARDS)
+	$(PHPCS) -i
+	$(PHPCS) --standard=$(CODE_STANDARD) --extensions=php -n $(PLUGIN_DIR)
+
 lint: configure_linter $(WP_CODE_STANDARDS)
 	$(PHPCS) -i
-	$(PHPCS) --standard=$(CODE_STANDARD) --ignore=$(LINTER_IGNORE) $(PLUGIN_DIR)/*.php
+	$(PHPCS) --standard=$(CODE_STANDARD) --extensions=php --colors $(PLUGIN_DIR)
 
 autofix: configure_linter $(PHPCBF) $(WP_CODE_STANDARDS)
 	$(PHPCBF) -i
-	$(PHPCBF) --standard=$(CODE_STANDARD) --ignore=$(LINTER_IGNORE) $(PLUGIN_DIR)/*.php
+	$(PHPCBF) --standard=$(CODE_STANDARD) --extensions=php $(PLUGIN_DIR)
+
 
 configure_linter: $(PHPCS)
 	$(PHPCS) --config-set installed_paths $(WP_CODE_STANDARDS)
