@@ -3,6 +3,8 @@
 
 [![Build Status](https://travis-ci.org/mozilla/wp-offline-content.svg?branch=master)](https://travis-ci.org/mozilla/wp-offline-content) [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/offline-content.svg)](https://wordpress.org/plugins/offline-content/) [![WordPress](https://img.shields.io/wordpress/plugin/dt/offline-content.svg)](https://wordpress.org/plugins/offline-content/)
 
+> **IMPORTANT**: I'm very sorry to announce this plugin is **unmaintained** thought it is still compatible with WordPress up to version 4.4.10.
+
 ## Install the plugin
 
 You can find this plugin in the [WordPress Plugin repository](https://wordpress.org/plugins/offline-content/) so you can install it from the _Plugins_ menu of your WordPress installation.
